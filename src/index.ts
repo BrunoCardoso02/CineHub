@@ -1,4 +1,5 @@
 import express, {Request, Response} from 'express';
+import UserController from './controllers/UserController';
 
 const app = express();
 const port = 8000;
@@ -10,6 +11,8 @@ app.get('/', (req: Request, res: Response) => {
     message: 'Hello world',
   });
 });
+
+app.post('/createUser', UserController.createUser);
 
 app.listen(port, () => {
   console.log(`App running on localhost: ${port}`)
