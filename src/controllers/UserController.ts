@@ -45,8 +45,8 @@ export default {
     async getUserId(request: Request, response: Response) {
         try {
             const { id } = request.params;
-            const user = await prisma.user.findUnique({where: {id: Number(id)}});
-            if(!user) {
+            const user = await prisma.user.findUnique({ where: { id: Number(id) } });
+            if (!user) {
                 return response.status(404).json({
                     error: true,
                     message: 'Usuário não existe'
