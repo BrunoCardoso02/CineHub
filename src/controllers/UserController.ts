@@ -7,12 +7,11 @@ export default {
             const { name, email, password, } = request.body;
             const userExists = await prisma.user.findUnique({ where: { email } });
             if (userExists) {
-                return response.json({
+                return response.status(409).json({
                     error: true,
                     message: 'Usuário já cadastrado'
                 });
             }
-
             const newUser = await prisma.user.create({
                 data: {
                     name,
@@ -20,13 +19,11 @@ export default {
                     password,
                 }
             });
-
-            return response.json({
+            return response.status(201).json({
                 error: false,
                 message: 'Usuário cadastrado!!',
                 newUser
             })
-
         } catch (err) {
             return response.json({ message: err });
         }
