@@ -25,7 +25,21 @@ export default {
                 newUser
             })
         } catch (err) {
-            return response.json({ message: err });
+            return response.status(500).json({ message: err });
+        }
+    },
+    async getUser(request: Request, response: Response) {
+        try {
+            const users = await prisma.user.findMany();
+
+            return response.status(200).json({
+                error: false,
+                data: {
+                    users
+                }
+            })
+        } catch(err) {
+            return response.status(500).json({message: err})
         }
     }
 };
