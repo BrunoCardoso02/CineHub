@@ -13,7 +13,8 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.post('/createUser', UserController.createUser);
-app.get('/listUsers', UserController.getUser)
+app.get('/listUsers', UserController.getUser);
+app.get('/listUser/:id', UserController.getUserId);
 
 app.listen(port, () => {
   console.log(`App running on localhost: ${port}`)
