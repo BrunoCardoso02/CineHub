@@ -1,5 +1,6 @@
 import express, {Request, Response} from 'express';
 import UserController from './controllers/UserController';
+import MovieController from './controllers/MovieController';
 
 const app = express();
 const port = 8000;
@@ -15,6 +16,7 @@ app.get('/', (req: Request, res: Response) => {
 app.post('/createUser', UserController.createUser);
 app.get('/listUsers', UserController.getUser);
 app.get('/listUser/:id', UserController.getUserId);
+app.post('/createMovie', MovieController.createMovie);
 
 app.listen(port, () => {
   console.log(`App running on localhost: ${port}`)
