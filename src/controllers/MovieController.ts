@@ -10,7 +10,7 @@ export default {
                 return response.status(409).json({
                     error: true,
                     message: 'Filme já cadastrado!',
-                    
+
                 });
             };
             const newMovie = await prisma.movies.create({
@@ -26,6 +26,20 @@ export default {
                 message: 'Filme cadastrado com sucesso!',
                 newMovie
             })
+        } catch (err) {
+            return response.status(500).json({
+                message: 'Erro ao enviar requisição!', err
+            })
+        }
+    },
+
+    async listMovies(request: Request, response: Response) {
+        try {
+            const listMovies = await prisma.movies.findMany();
+            return response.status(200).json({
+                error: false,
+                listMovies,
+            });
         } catch (err) {
             return response.status(500).json({
                 message: 'Erro ao enviar requisição!', err
