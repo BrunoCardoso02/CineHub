@@ -19,6 +19,8 @@ app.get('/listUser/:id', UserController.getUserId);
 app.post('/createMovie', MovieController.createMovie);
 app.get('/listMovies', MovieController.listMovies);
 
+app.delete('/deleteUser/:id', UserController.deleteUser);
+
 app.listen(port, () => {
   console.log(`App running on localhost: ${port}`)
 });
