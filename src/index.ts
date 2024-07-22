@@ -18,7 +18,7 @@ app.get('/listUsers', UserController.getUser);
 app.get('/listUser/:id', UserController.getUserId);
 app.post('/createMovie', MovieController.createMovie);
 app.get('/listMovies', MovieController.listMovies);
-
+app.post('/signIn', UserController.authUser);
 app.delete('/deleteUser/:id', UserController.deleteUser);
 
 app.listen(port, () => {

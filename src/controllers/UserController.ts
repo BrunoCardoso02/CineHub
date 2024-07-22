@@ -1,7 +1,8 @@
 import { Request, Response } from 'express'
 import { prisma } from './database';
 import * as jwt from 'jsonwebtoken';
-import { compareSync } from 'bcrypt';
+import { compareSync, hashSync } from 'bcrypt';
+import { JWT_SECRET } from '../secrets';
 
 export default {
     async createUser(request: Request, response: Response) {
@@ -18,7 +19,7 @@ export default {
                 data: {
                     name,
                     email,
-                    password,
+                    password: hashSync(password, 10),
                 }
             });
             return response.status(201).json({
@@ -85,5 +86,36 @@ export default {
         }
     },
 
+    async authUser(request: Request, response: Response) {
+        try {
+            const { email, password } = request.body;
+            const userExisting = await prisma.user.findFirst({ where: { email } });
 
+            if (!userExisting) {
+                return response.status(400).json({
+                    error: true,
+                    message: 'Usuário não existe'
+                })
+            };
+            if (!compareSync(password, userExisting.password)) {
+                return response.status(400).json({
+                    error: true,
+                    message: 'Senha incorreta',
+                })
+            }
+            const token = jwt.sign({
+                userId: userExisting.id
+            }, JWT_SECRET);
+
+            return response.status(200).json({
+                error: false,
+                userExisting,
+                token
+            })
+        } catch (err) {
+            return response.status(500).json({
+                message: err
+            })
+        }
+    }
 };
