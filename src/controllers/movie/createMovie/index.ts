@@ -4,11 +4,18 @@ import { prisma } from "../../../database";
 async function createMovie(request: Request, response: Response) {
     try {
         const { name, gender, sinopse, year } = request.body;
+        const { authorization } = request.headers;
         const movieExists = await prisma.movies.findUnique({ where: { name } });
         if (movieExists) {
             return response.status(409).json({
                 error: true,
                 message: 'Filme já cadastrado!',
+
+            });
+        } else if(!authorization) {
+            return response.status(401).json({
+                error: true,
+                message: 'Usuário não autorizado!',
 
             });
         };
